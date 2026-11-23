@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sản phẩm Thực tế | Dự án Học liệu &amp; Web Ôn tập Trực tuyến</title>
+
+  <!-- Google Fonts: Be Vietnam Pro & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Cấu hình Design Tokens cho Tailwind -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Be Vietnam Pro"', 'sans-serif'],
+            display: ['"Plus Jakarta Sans"', '"Be Vietnam Pro"', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAF9F6',       // Nền trắng kem Editorial
+            ink: '#1E293B',         // Màu chữ chính
+            tealaccent: {
+              DEFAULT: '#0F766E',   // Xanh ngọc đậm chủ đạo
+              dark: '#115E59',
+              soft: '#F0FDFA',
+              border: '#CCFBF1',
+            },
+          },
+          boxShadow: {
+            card: '0 4px 24px rgba(15, 23, 42, 0.045)',
+            cardHover: '0 12px 32px rgba(15, 118, 110, 0.09)',
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- CSS cho khung thu nhỏ iframe 16:10 và tối ưu in ấn A4 ngang -->
+  <style>
+    body {
+      background-color: #FAF9F6;
+      color: #1E293B;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Khung iframe thu nhỏ 25% không tương tác để làm thumbnail sống động */
+    .iframe-thumb-scaler {
+      width: 400%;
+      height: 400%;
+      transform: scale(0.25);
+      transform-origin: top left;
+      pointer-events: none;
+      border: 0;
+    }
+
+    /* Tối ưu in ấn PDF: 1 trang A4 ngang (landscape) gọn đẹp */
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 10mm 12mm;
+      }
+
+      body {
+        background-color: #FFFFFF !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .print-container {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+
+      .print-grid-3 {
+        display: grid !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 14px !important;
+      }
+
+      .print-card {
+        box-shadow: none !important;
+        border: 1px solid #CBD5E1 !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .print-compact-header {
+        margin-bottom: 14px !important;
+        padding-bottom: 12px !important;
+      }
+
+      a[href]:after {
+        content: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="font-sans text-ink bg-cream min-h-screen flex flex-col justify-center overflow-x-hidden selection:bg-tealaccent/15 selection:text-tealaccent">
+
+  <!-- ======================================================================= -->
+  <!-- PHẦN DUY NHẤT: SẢN PHẨM THỰC TẾ — DỰ ÁN HỌC LIỆU & WEB ÔN TẬP TRỰC TUYẾN -->
+  <!-- ======================================================================= -->
+  <main class="print-container w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+
+    <!-- 1. HEADER GỌN GÀNG CỦA PHẦN NỘI DUNG -->
+    <header class="print-compact-header flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-8 mb-9 border-b border-stone-200/90">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-tealaccent mb-2.5">
+          <span class="w-2 h-2 rounded-full bg-tealaccent"></span>
+          <span>SẢN PHẨM THỰC TẾ</span>
+        </div>
+
+        <h1 class="font-display text-2xl sm:text-4xl font-extrabold tracking-tight text-ink leading-tight">
+          Dự án Học liệu &amp; Web Ôn tập Trực tuyến
+        </h1>
+
+        <p class="mt-2.5 text-sm sm:text-base text-slate-600 leading-relaxed">
+          Các sản phẩm học liệu số và web ôn tập tiếng Trung do Trần Thị Thu Huyền thiết kế &amp; lập trình, tối ưu tương tác cho học viên.
+        </p>
+      </div>
+
+      <!-- Nút Xuất PDF (ẩn khi in) -->
+      <div class="shrink-0 print:hidden">
+        <button
+          type="button"
+          onclick="window.print()"
+          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white hover:bg-tealaccent-soft text-tealaccent border border-tealaccent/30 hover:border-tealaccent text-sm font-semibold shadow-sm active:scale-[0.98] transition-all"
+          title="Xuất thành file PDF khổ ngang A4 để nộp kèm CV"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V4h12v5M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v7H6v-7z" />
+          </svg>
+          <span>Xuất PDF</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. LƯỚI 3 THẺ DỰ ÁN (3 CỘT DESKTOP / 1 CỘT MOBILE) -->
+    <section
+      aria-label="Danh sách dự án học liệu và web ôn tập"
+      class="print-grid-3 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch"
+    >
+
+      <!-- =================================================================== -->
+      <!-- THẺ DỰ ÁN 1: GIÁO ÁN ĐIỆN TỬ TƯƠNG TÁC                              -->
+      <!-- =================================================================== -->
+      <article class="print-card group bg-white rounded-2xl border border-stone-200/90 shadow-card hover:shadow-cardHover hover:border-tealaccent/30 transition-all duration-300 flex flex-col overflow-hidden">
+
+        <!-- Khu vực xem trước trực quan tỷ lệ 16:10 -->
+        <div class="relative bg-stone-100 border-b border-stone-200/80 overflow-hidden">
+          <!-- Thanh tiêu đề trình duyệt mini -->
+          <div class="flex items-center justify-between px-3 py-2 bg-stone-50 border-b border-stone-200/70">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-300"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-300"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-300"></span>
+            </div>
+            <span class="text-[10px] font-mono text-slate-400 truncate max-w-[180px]">
+              tthtranhuyen-lgtm.github.io/giaoan1bai
+            </span>
+            <span class="w-4"></span>
+          </div>
+
+          <!-- Khung 16:10 chứa iframe thu nhỏ hoặc ảnh chụp người dùng tải lên -->
+          <div class="relative w-full aspect-[16/10] bg-white overflow-hidden">
+            <!-- Bản xem trước nhúng nhẹ (iframe thu nhỏ) -->
+            <iframe
+              id="thumb-iframe-1"
+              src="https://tthtranhuyen-lgtm.github.io/giaoan1bai/"
+              title="Xem trước thu nhỏ Giáo án Điện tử Tương tác"
+              class="iframe-thumb-scaler bg-white"
+              loading="lazy"
+              tabindex="-1"
+            ></iframe>
+
+            <!-- Ảnh chụp thay thế (ẩn mặc định, hiện khi người dùng chọn ảnh) -->
+            <img
+              id="thumb-img-1"
+              src=""
+              alt="Ảnh chụp Giáo án Điện tử Tương tác"
+              class="hidden absolute inset-0 w-full h-full object-cover object-top"
+            />
+
+            <!-- Lớp phủ nhấn để mở xem trước + nút Thay ảnh chụp -->
+            <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors flex items-end justify-between p-2.5 print:hidden">
+              <button
+                type="button"
+                onclick="openPreviewModal('Giáo án Điện tử Tương tác', 'https://tthtranhuyen-lgtm.github.io/giaoan1bai/')"
+                class="opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-900 text-white text-[11px] font-medium backdrop-blur-sm"
+              >
+                Phóng to xem thử
+              </button>
+
+              <div class="flex items-center gap-1.5 ml-auto">
+                <button
+                  id="reset-img-1"
+                  type="button"
+                  onclick="resetThumbnail(1)"
+                  class="hidden px-2 py-1.5 rounded-lg bg-white/95 hover:bg-rose-50 text-rose-600 border border-stone-200 text-[11px] font-semibold shadow-sm backdrop-blur-sm transition-colors"
+                  title="Quay lại xem trước web trực tiếp"
+                >
+                  Hoàn tác
+                </button>
+                <label
+                  for="upload-img-1"
+                  class="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/95 hover:bg-tealaccent-soft text-slate-700 hover:text-tealaccent border border-stone-200/90 text-[11px] font-semibold shadow-sm backdrop-blur-sm transition-colors"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>Thay ảnh chụp</span>
+                </label>
+                <input
+                  id="upload-img-1"
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  onchange="handleThumbnailUpload(event, 1)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nội dung mô tả dự án -->
+        <div class="p-5 sm:p-6 flex-1 flex flex-col">
+          <div class="mb-2.5">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-tealaccent-soft border border-tealaccent-border text-tealaccent text-xs font-bold tracking-wide">
+              Giáo án số
+            </span>
+          </div>
+
+          <h2 class="font-display text-lg sm:text-xl font-bold text-ink leading-snug">
+            Giáo án Điện tử Tương tác
+          </h2>
+
+          <p class="mt-2.5 text-sm text-slate-600 leading-relaxed flex-1">
+            Hệ thống giáo án điện tử trực quan theo cấu trúc bài giảng hiện đại, hỗ trợ giảng dạy tương tác và theo dõi tiến trình lớp học.
+          </p>
+
+          <!-- Các thẻ tính năng nhỏ (Tags) -->
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Giáo án số</span>
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Tương tác</span>
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">HTML/CSS</span>
+          </div>
+
+          <!-- Khu vực truy cập nhanh ở đáy thẻ -->
+          <div class="mt-5 pt-4 border-t border-stone-200/80 space-y-4">
+            <!-- Mã QR 64x64 + Link rõ ràng -->
+            <div class="flex items-center gap-3.5">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=4&color=1E293B&data=https%3A%2F%2Ftthtranhuyen-lgtm.github.io%2Fgiaoan1bai%2F"
+                onerror="this.src='https://placehold.co/64x64/FAF9F6/0F766E?text=QR'"
+                alt="Mã QR Giáo án Điện tử Tương tác"
+                class="w-16 h-16 shrink-0 rounded-xl border border-stone-200 bg-white p-1"
+              />
+              <div class="min-w-0">
+                <p class="text-xs font-semibold text-ink">Quét QR để thử</p>
+                <a
+                  href="https://tthtranhuyen-lgtm.github.io/giaoan1bai/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block mt-0.5 text-[11px] font-mono text-tealaccent hover:underline break-all leading-snug"
+                >
+                  tthtranhuyen-lgtm.github.io/giaoan1bai/
+                </a>
+              </div>
+            </div>
+
+            <!-- 2 nút hành động (ẩn khi in) -->
+            <div class="grid grid-cols-2 gap-2.5 print:hidden">
+              <button
+                type="button"
+                onclick="openPreviewModal('Giáo án Điện tử Tương tác', 'https://tthtranhuyen-lgtm.github.io/giaoan1bai/')"
+                class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-tealaccent hover:bg-tealaccent-dark text-white text-xs font-semibold shadow-sm active:scale-[0.98] transition-all"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>Xem trước tại đây</span>
+              </button>
+
+              <a
+                href="https://tthtranhuyen-lgtm.github.io/giaoan1bai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-cream hover:bg-stone-100 text-ink border border-stone-300/90 text-xs font-semibold active:scale-[0.98] transition-all"
+              >
+                <span>Mở trang web</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- =================================================================== -->
+      <!-- THẺ DỰ ÁN 2: WEB HỌC PINYIN & PHÁT ÂM                               -->
+      <!-- =================================================================== -->
+      <article class="print-card group bg-white rounded-2xl border border-stone-200/90 shadow-card hover:shadow-cardHover hover:border-tealaccent/30 transition-all duration-300 flex flex-col overflow-hidden">
+
+        <!-- Khu vực xem trước trực quan tỷ lệ 16:10 -->
+        <div class="relative bg-stone-100 border-b border-stone-200/80 overflow-hidden">
+          <div class="flex items-center justify-between px-3 py-2 bg-stone-50 border-b border-stone-200/70">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-300"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-300"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-300"></span>
+            </div>
+            <span class="text-[10px] font-mono text-slate-400 truncate max-w-[180px]">
+              tthtranhuyen-lgtm.github.io/meohocpinyin
+            </span>
+            <span class="w-4"></span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-white overflow-hidden">
+            <iframe
+              id="thumb-iframe-2"
+              src="https://tthtranhuyen-lgtm.github.io/meohocpinyin/"
+              title="Xem trước thu nhỏ Web học Pinyin & Phát âm"
+              class="iframe-thumb-scaler bg-white"
+              loading="lazy"
+              tabindex="-1"
+            ></iframe>
+
+            <img
+              id="thumb-img-2"
+              src=""
+              alt="Ảnh chụp Web học Pinyin & Phát âm"
+              class="hidden absolute inset-0 w-full h-full object-cover object-top"
+            />
+
+            <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors flex items-end justify-between p-2.5 print:hidden">
+              <button
+                type="button"
+                onclick="openPreviewModal('Web học Pinyin & Phát âm', 'https://tthtranhuyen-lgtm.github.io/meohocpinyin/')"
+                class="opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-900 text-white text-[11px] font-medium backdrop-blur-sm"
+              >
+                Phóng to xem thử
+              </button>
+
+              <div class="flex items-center gap-1.5 ml-auto">
+                <button
+                  id="reset-img-2"
+                  type="button"
+                  onclick="resetThumbnail(2)"
+                  class="hidden px-2 py-1.5 rounded-lg bg-white/95 hover:bg-rose-50 text-rose-600 border border-stone-200 text-[11px] font-semibold shadow-sm backdrop-blur-sm transition-colors"
+                  title="Quay lại xem trước web trực tiếp"
+                >
+                  Hoàn tác
+                </button>
+                <label
+                  for="upload-img-2"
+                  class="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/95 hover:bg-tealaccent-soft text-slate-700 hover:text-tealaccent border border-stone-200/90 text-[11px] font-semibold shadow-sm backdrop-blur-sm transition-colors"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>Thay ảnh chụp</span>
+                </label>
+                <input
+                  id="upload-img-2"
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  onchange="handleThumbnailUpload(event, 2)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nội dung mô tả dự án -->
+        <div class="p-5 sm:p-6 flex-1 flex flex-col">
+          <div class="mb-2.5">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-tealaccent-soft border border-tealaccent-border text-tealaccent text-xs font-bold tracking-wide">
+              Web học tập
+            </span>
+          </div>
+
+          <h2 class="font-display text-lg sm:text-xl font-bold text-ink leading-snug">
+            Web học Pinyin &amp; Phát âm
+          </h2>
+
+          <p class="mt-2.5 text-sm text-slate-600 leading-relaxed flex-1">
+            Công cụ trực tuyến hỗ trợ học viên nắm vững hệ thống thanh mẫu, vận mẫu, thanh điệu và quy tắc phát âm tiếng Trung một cách trực quan, dễ nhớ.
+          </p>
+
+          <!-- Các thẻ tính năng nhỏ (Tags) -->
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Pinyin</span>
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Phát âm</span>
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Tự học</span>
+          </div>
+
+          <!-- Khu vực truy cập nhanh ở đáy thẻ -->
+          <div class="mt-5 pt-4 border-t border-stone-200/80 space-y-4">
+            <div class="flex items-center gap-3.5">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=4&color=1E293B&data=https%3A%2F%2Ftthtranhuyen-lgtm.github.io%2Fmeohocpinyin%2F"
+                onerror="this.src='https://placehold.co/64x64/FAF9F6/0F766E?text=QR'"
+                alt="Mã QR Web học Pinyin & Phát âm"
+                class="w-16 h-16 shrink-0 rounded-xl border border-stone-200 bg-white p-1"
+              />
+              <div class="min-w-0">
+                <p class="text-xs font-semibold text-ink">Quét QR để thử</p>
+                <a
+                  href="https://tthtranhuyen-lgtm.github.io/meohocpinyin/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block mt-0.5 text-[11px] font-mono text-tealaccent hover:underline break-all leading-snug"
+                >
+                  tthtranhuyen-lgtm.github.io/meohocpinyin/
+                </a>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 print:hidden">
+              <button
+                type="button"
+                onclick="openPreviewModal('Web học Pinyin & Phát âm', 'https://tthtranhuyen-lgtm.github.io/meohocpinyin/')"
+                class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-tealaccent hover:bg-tealaccent-dark text-white text-xs font-semibold shadow-sm active:scale-[0.98] transition-all"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>Xem trước tại đây</span>
+              </button>
+
+              <a
+                href="https://tthtranhuyen-lgtm.github.io/meohocpinyin/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-cream hover:bg-stone-100 text-ink border border-stone-300/90 text-xs font-semibold active:scale-[0.98] transition-all"
+              >
+                <span>Mở trang web</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- =================================================================== -->
+      <!-- THẺ DỰ ÁN 3: GAME PIKACHU TỪ VỰNG                                   -->
+      <!-- =================================================================== -->
+      <article class="print-card group bg-white rounded-2xl border border-stone-200/90 shadow-card hover:shadow-cardHover hover:border-tealaccent/30 transition-all duration-300 flex flex-col overflow-hidden">
+
+        <!-- Khu vực xem trước trực quan tỷ lệ 16:10 -->
+        <div class="relative bg-stone-100 border-b border-stone-200/80 overflow-hidden">
+          <div class="flex items-center justify-between px-3 py-2 bg-stone-50 border-b border-stone-200/70">
+            <div class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-300"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-300"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-300"></span>
+            </div>
+            <span class="text-[10px] font-mono text-slate-400 truncate max-w-[180px]">
+              tthtranhuyen-lgtm.github.io/pikachu-2
+            </span>
+            <span class="w-4"></span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-white overflow-hidden">
+            <iframe
+              id="thumb-iframe-3"
+              src="https://tthtranhuyen-lgtm.github.io/pikachu-2/"
+              title="Xem trước thu nhỏ Game Pikachu Từ vựng"
+              class="iframe-thumb-scaler bg-white"
+              loading="lazy"
+              tabindex="-1"
+            ></iframe>
+
+            <img
+              id="thumb-img-3"
+              src=""
+              alt="Ảnh chụp Game Pikachu Từ vựng"
+              class="hidden absolute inset-0 w-full h-full object-cover object-top"
+            />
+
+            <div class="absolute inset-0 bg-slate-900/0 group-hover:bg-slate-900/5 transition-colors flex items-end justify-between p-2.5 print:hidden">
+              <button
+                type="button"
+                onclick="openPreviewModal('Game Pikachu Từ vựng', 'https://tthtranhuyen-lgtm.github.io/pikachu-2/')"
+                class="opacity-0 group-hover:opacity-100 transition-opacity px-2.5 py-1.5 rounded-lg bg-slate-900/80 hover:bg-slate-900 text-white text-[11px] font-medium backdrop-blur-sm"
+              >
+                Phóng to xem thử
+              </button>
+
+              <div class="flex items-center gap-1.5 ml-auto">
+                <button
+                  id="reset-img-3"
+                  type="button"
+                  onclick="resetThumbnail(3)"
+                  class="hidden px-2 py-1.5 rounded-lg bg-white/95 hover:bg-rose-50 text-rose-600 border border-stone-200 text-[11px] font-semibold shadow-sm backdrop-blur-sm transition-colors"
+                  title="Quay lại xem trước web trực tiếp"
+                >
+                  Hoàn tác
+                </button>
+                <label
+                  for="upload-img-3"
+                  class="cursor-pointer inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/95 hover:bg-tealaccent-soft text-slate-700 hover:text-tealaccent border border-stone-200/90 text-[11px] font-semibold shadow-sm backdrop-blur-sm transition-colors"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>Thay ảnh chụp</span>
+                </label>
+                <input
+                  id="upload-img-3"
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  onchange="handleThumbnailUpload(event, 3)"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nội dung mô tả dự án -->
+        <div class="p-5 sm:p-6 flex-1 flex flex-col">
+          <div class="mb-2.5">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-lg bg-tealaccent-soft border border-tealaccent-border text-tealaccent text-xs font-bold tracking-wide">
+              Gamification
+            </span>
+          </div>
+
+          <h2 class="font-display text-lg sm:text-xl font-bold text-ink leading-snug">
+            Game Pikachu Từ vựng
+          </h2>
+
+          <p class="mt-2.5 text-sm text-slate-600 leading-relaxed flex-1">
+            Trò chơi nối cặp từ vựng theo phong cách Pikachu giúp học viên ôn tập chữ Hán, phiên âm và nghĩa tiếng Việt qua phản xạ nhanh đầy hứng thú.
+          </p>
+
+          <!-- Các thẻ tính năng nhỏ (Tags) -->
+          <div class="mt-4 flex flex-wrap gap-1.5">
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Gamification</span>
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Từ vựng HSK</span>
+            <span class="px-2.5 py-1 rounded-md bg-stone-100 text-slate-700 text-[11px] font-medium">Ôn tập</span>
+          </div>
+
+          <!-- Khu vực truy cập nhanh ở đáy thẻ -->
+          <div class="mt-5 pt-4 border-t border-stone-200/80 space-y-4">
+            <div class="flex items-center gap-3.5">
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&margin=4&color=1E293B&data=https%3A%2F%2Ftthtranhuyen-lgtm.github.io%2Fpikachu-2%2F"
+                onerror="this.src='https://placehold.co/64x64/FAF9F6/0F766E?text=QR'"
+                alt="Mã QR Game Pikachu Từ vựng"
+                class="w-16 h-16 shrink-0 rounded-xl border border-stone-200 bg-white p-1"
+              />
+              <div class="min-w-0">
+                <p class="text-xs font-semibold text-ink">Quét QR để thử</p>
+                <a
+                  href="https://tthtranhuyen-lgtm.github.io/pikachu-2/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block mt-0.5 text-[11px] font-mono text-tealaccent hover:underline break-all leading-snug"
+                >
+                  tthtranhuyen-lgtm.github.io/pikachu-2/
+                </a>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2.5 print:hidden">
+              <button
+                type="button"
+                onclick="openPreviewModal('Game Pikachu Từ vựng', 'https://tthtranhuyen-lgtm.github.io/pikachu-2/')"
+                class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-tealaccent hover:bg-tealaccent-dark text-white text-xs font-semibold shadow-sm active:scale-[0.98] transition-all"
+              >
+                <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>Xem trước tại đây</span>
+              </button>
+
+              <a
+                href="https://tthtranhuyen-lgtm.github.io/pikachu-2/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-cream hover:bg-stone-100 text-ink border border-stone-300/90 text-xs font-semibold active:scale-[0.98] transition-all"
+              >
+                <span>Mở trang web</span>
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+    </section>
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL XEM TRƯỚC TRỰC TIẾP (LIVE PREVIEW MODAL)                          -->
+  <!-- ======================================================================= -->
+  <div
+    id="preview-modal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-sm p-3 sm:p-6 print:hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="preview-modal-title"
+  >
+    <div class="bg-white rounded-2xl w-full max-w-6xl h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-stone-200">
+      <!-- Header của Modal -->
+      <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 px-4 sm:px-6 py-3.5 bg-cream border-b border-stone-200">
+        <div class="min-w-0 flex-1">
+          <h3 id="preview-modal-title" class="font-display font-bold text-base sm:text-lg text-ink truncate">
+            Xem trước sản phẩm
+          </h3>
+          <!-- Thanh địa chỉ chứa link thật -->
+          <div class="mt-1 inline-flex items-center gap-1.5 max-w-full px-2.5 py-1 rounded-lg bg-white border border-stone-200 text-xs font-mono text-slate-600">
+            <svg class="w-3.5 h-3.5 text-tealaccent shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
+            </svg>
+            <span id="preview-modal-url" class="truncate"></span>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 shrink-0">
+          <a
+            id="preview-modal-ext-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-tealaccent hover:bg-tealaccent-dark text-white text-xs font-semibold transition-colors"
+          >
+            <span>Mở tab mới ↗</span>
+          </a>
+
+          <button
+            type="button"
+            onclick="closePreviewModal()"
+            aria-label="Đóng cửa sổ xem trước"
+            class="p-2 rounded-xl text-slate-500 hover:bg-stone-200/70 hover:text-ink transition-colors"
+            title="Đóng (ESC)"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Khung Iframe tương tác toàn màn hình -->
+      <div class="relative flex-1 bg-stone-100">
+        <div id="iframe-loader" class="absolute inset-0 flex flex-col items-center justify-center gap-2.5 text-slate-500 text-sm">
+          <div class="w-7 h-7 border-2 border-tealaccent border-t-transparent rounded-full animate-spin"></div>
+          <span>Đang tải ứng dụng trực tiếp...</span>
+        </div>
+        <iframe
+          id="preview-iframe"
+          src=""
+          title="Xem trước trực tiếp dự án"
+          class="relative z-10 w-full h-full border-0 bg-white opacity-0 transition-opacity duration-300"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- JAVASCRIPT: MODAL XEM TRƯỚC & THAY ẢNH CHỤP MÀN HÌNH                    -->
+  <!-- ======================================================================= -->
+  <script>
+    const previewModal = document.getElementById('preview-modal');
+    const previewTitle = document.getElementById('preview-modal-title');
+    const previewUrlText = document.getElementById('preview-modal-url');
+    const previewExtLink = document.getElementById('preview-modal-ext-link');
+    const previewIframe = document.getElementById('preview-iframe');
+    const iframeLoader = document.getElementById('iframe-loader');
+
+    /**
+     * Mở cửa sổ Modal xem trước trực tiếp sản phẩm
+     * @param {string} title - Tên dự án
+     * @param {string} url - Đường dẫn thực tế của dự án
+     */
+    function openPreviewModal(title, url) {
+      try {
+        previewTitle.textContent = title;
+        previewUrlText.textContent = url;
+        previewExtLink.href = url;
+
+        iframeLoader.classList.remove('hidden');
+        previewIframe.classList.add('opacity-0');
+        previewIframe.src = url;
+
+        previewModal.classList.remove('hidden');
+        previewModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
+      } catch (err) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    }
+
+    /**
+     * Ẩn spinner khi iframe tải xong
+     */
+    previewIframe.addEventListener('load', () => {
+      if (previewIframe.src && previewIframe.src !== window.location.href) {
+        iframeLoader.classList.add('hidden');
+        previewIframe.classList.remove('opacity-0');
+      }
+    });
+
+    /**
+     * Đóng Modal và giải phóng tài nguyên iframe
+     */
+    function closePreviewModal() {
+      previewModal.classList.add('hidden');
+      previewModal.classList.remove('flex');
+      previewIframe.src = '';
+      document.body.style.overflow = '';
+    }
+
+    // Đóng khi bấm vào vùng nền tối ngoài modal
+    previewModal.addEventListener('click', (event) => {
+      if (event.target === previewModal) {
+        closePreviewModal();
+      }
+    });
+
+    // Đóng khi bấm phím Escape
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !previewModal.classList.contains('hidden')) {
+        closePreviewModal();
+      }
+    });
+
+    /**
+     * Thay ảnh chụp màn hình từ máy tính cho từng thẻ dự án
+     * @param {Event} event - Sự kiện chọn file
+     * @param {number} cardIndex - Số thứ tự thẻ (1, 2, 3)
+     */
+    function handleThumbnailUpload(event, cardIndex) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imgEl = document.getElementById(`thumb-img-${cardIndex}`);
+        const iframeEl = document.getElementById(`thumb-iframe-${cardIndex}`);
+        const resetBtn = document.getElementById(`reset-img-${cardIndex}`);
+
+        if (imgEl && iframeEl) {
+          imgEl.src = e.target.result;
+          imgEl.classList.remove('hidden');
+          iframeEl.classList.add('hidden');
+          if (resetBtn) resetBtn.classList.remove('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /**
+     * Khôi phục lại bản xem trước iframe trực tiếp cho thẻ
+     * @param {number} cardIndex - Số thứ tự thẻ (1, 2, 3)
+     */
+    function resetThumbnail(cardIndex) {
+      const imgEl = document.getElementById(`thumb-img-${cardIndex}`);
+      const iframeEl = document.getElementById(`thumb-iframe-${cardIndex}`);
+      const resetBtn = document.getElementById(`reset-img-${cardIndex}`);
+      const fileInput = document.getElementById(`upload-img-${cardIndex}`);
+
+      if (imgEl && iframeEl) {
+        imgEl.src = '';
+        imgEl.classList.add('hidden');
+        iframeEl.classList.remove('hidden');
+        if (resetBtn) resetBtn.classList.add('hidden');
+        if (fileInput) fileInput.value = '';
+      }
+    }
+  </script>
+</body>
+</html>
